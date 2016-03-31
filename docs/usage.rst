@@ -95,24 +95,6 @@ Embeds a resource inside another resource just like you do in MongoEngine::
         customer = fields.EmbeddedDocumentField(embedded='test_project.test_app.api.resources.EmbeddedPersonResource', attribute='customer')
         ...
 
-EmbeddedListField
------------------
-
-If you are using ``ListField`` containing a ``EmbeddedDocumentField`` in
-MongoEngine document, it should be mapped to ``EmbeddedListField``::
-
-    from tastypie_mongoengine import fields
-
-    class EmbeddedListFieldTestResource(resources.MongoEngineResource):
-        embeddedlist = fields.EmbeddedListField(of='test_project.test_app.api.resources.EmbeddedPersonResource', attribute='embeddedlist', full=True, null=True)
-        ...
-
-``EmbeddedListField`` also exposes its embedded documents as subresources, so
-you can access them directly. For example, URI of the first element of the list
-above could be
-``/api/v1/embeddedlistfieldtest/4fb88d7549902817fe000000/embeddedlist/0/``. You
-can also manipulate subresources in the same manner as resources themselves.
-
 ReferencedListField
 -------------------
 
