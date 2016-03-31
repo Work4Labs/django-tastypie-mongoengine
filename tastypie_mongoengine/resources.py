@@ -6,26 +6,25 @@ from django.core.urlresolvers import Resolver404
 from django.db.models import base as models_base
 import mongoengine
 from mongoengine import queryset
-from mongoengine.queryset import transform as mongoengine_transform
+from mongoengine.queryset.transform import MATCH_OPERATORS
 from tastypie import exceptions as tastypie_exceptions, fields as tastypie_fields, resources
 from tastypie.exceptions import NotFound
 
 from tastypie_mongoengine import fields as tastypie_mongoengine_fields
 
 
-
-
-# When Tastypie accesses query terms used by QuerySet it assumes the interface of Django ORM.
-# We use a mock Query object to provide the same interface and return query terms by MongoEngine.
-# MongoEngine code might not expose these query terms, so we fallback to hard-coded values.
-
-QUERY_TERMS_ALL = mongoengine_transform.MATCH_OPERATORS
-
 class Query(object):
-    query_terms = dict([(query_term, None) for query_term in QUERY_TERMS_ALL])
+    """
+    When Tastypie accesses query terms used by QuerySet it assumes the interface of Django ORM.
+    We use a mock Query object to provide the same interface and return query terms by MongoEngine.
+    MongoEngine code might not expose these query terms, so we fallback to hard-coded values.
+    """
+    query_terms = set(MATCH_OPERATORS)
+
 
 if not hasattr(queryset.QuerySet, 'query'):
     queryset.QuerySet.query = Query()
+
 
 CONTENT_TYPE_RE = re.compile(r'.*; type=([\w\d-]+);?')
 
