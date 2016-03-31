@@ -6,10 +6,10 @@ This Django application provides MongoEngine_ support for django-tastypie_.
 Requirements
 ------------
 
-* Python_ 2.6+
-* Django_ 1.5+
-* django-tastypie_ 0.9.12+
-* MongoEngine_ >0.8.0, <0.8.2
+* Python_ 2.7+
+* Django_ 1.9+
+* django-tastypie_ 0.13.13+
+* MongoEngine_ 0.8.8+
 
 .. _Python: https://python.org
 .. _Django: http://djangoproject.com
