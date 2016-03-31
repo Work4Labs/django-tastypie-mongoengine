@@ -1,24 +1,18 @@
-import itertools
 import re
 import sys
 
-from django.conf import urls
-from django.core import exceptions, urlresolvers
+from django.core import exceptions
+from django.core.urlresolvers import Resolver404
 from django.db.models import base as models_base
-from django.utils import datastructures
-
-from django.db.models import constants
-
-from tastypie import bundle as tastypie_bundle, exceptions as tastypie_exceptions, fields as tastypie_fields, http, resources, utils
-
 import mongoengine
-from mongoengine import fields as mongoengine_fields, queryset
+from mongoengine import queryset
 from mongoengine.queryset import tranform as mongoengine_tranform
+from tastypie import exceptions as tastypie_exceptions, fields as tastypie_fields, resources
+from tastypie.exceptions import NotFound
 
 from tastypie_mongoengine import fields as tastypie_mongoengine_fields
 
-from tastypie.exceptions import NotFound
-from django.core.urlresolvers import Resolver404
+
 
 
 # When Tastypie accesses query terms used by QuerySet it assumes the interface of Django ORM.
