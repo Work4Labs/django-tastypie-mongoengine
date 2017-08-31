@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
 from tastypie import api
 
@@ -26,8 +26,6 @@ v1_api.register(resources.BlankableParentResource())
 v1_api.register(resources.ReadonlyParentResource())
 v1_api.register(resources.DatetimeFieldTestResource())
 
-urlpatterns = patterns(
-    '',
-
+urlpatterns = [
     url(r'^api/', include(v1_api.urls)),
-)
+]
