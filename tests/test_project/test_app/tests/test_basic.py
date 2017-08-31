@@ -219,52 +219,6 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response['stringlist'], ['a', 'b', 'c'])
         self.assertEqual(response['anytype'], ['a', 1, None, 2])
 
-        # Field is not required
-        response = self.c.post(self.resourceListURI('embeddedlistfieldtest'), '{"embeddedlist": []}', content_type='application/json')
-        self.assertEqual(response.status_code, 201)
-
-        response = self.c.post(self.resourceListURI('embeddedlistfieldtest'), '{"embeddedlist": [{"name": "Embedded person 1"}, {"name": "Embedded person 2", "hidden": "Should be hidden"}]}', content_type='application/json')
-        self.assertEqual(response.status_code, 201)
-
-        embeddedlistfieldtest_uri = response['location']
-
-        response = self.c.get(embeddedlistfieldtest_uri)
-        self.assertEqual(response.status_code, 200)
-        response = json.loads(response.content)
-
-        self.assertEqual(response['embeddedlist'][0]['name'], 'Embedded person 1')
-        self.assertEqual(response['embeddedlist'][1]['name'], 'Embedded person 2')
-        self.assertTrue('hidden' not in response['embeddedlist'][1])
-        self.assertEqual(len(response['embeddedlist']), 2)
-
-        embeddedlistfieldtest_object = documents.EmbeddedListFieldTest.objects.get(pk=self.resourcePK(self.fullURItoAbsoluteURI(embeddedlistfieldtest_uri)))
-        self.assertEqual(embeddedlistfieldtest_object.embeddedlist[1].hidden, None)
-
-        response = self.c.post(self.resourceListURI('embeddedlistfieldtest'), '{"embeddedlist": ["%s"]}' % self.fullURItoAbsoluteURI(person1_uri), content_type='application/json')
-        self.assertContains(response, 'was not given a dictionary-alike data', status_code=400)
-
-        response = self.c.post(self.resourceListURI('embeddedlistfieldnonfulltest'), '{"embeddedlist": [{"name": "Embedded person 1"}, {"name": "Embedded person 2", "hidden": "Should be hidden"}]}', content_type='application/json')
-        self.assertEqual(response.status_code, 201)
-
-        embeddedlistfieldnonfulltest_uri = response['location']
-
-        response = self.c.get(embeddedlistfieldnonfulltest_uri)
-        self.assertEqual(response.status_code, 200)
-        response = json.loads(response.content)
-
-        self.assertEqual(len(response['embeddedlist']), 2)
-
-        for i, person_uri in enumerate(response['embeddedlist']):
-            person = self.c.get(person_uri)
-            self.assertEqual(person.status_code, 200)
-            person = json.loads(person.content)
-
-            self.assertEqual(person['name'], 'Embedded person %d' % (i + 1))
-            self.assertTrue('hidden' not in person)
-
-        embeddedlistfieldtest_object = documents.EmbeddedListFieldTest.objects.get(pk=self.resourcePK(self.fullURItoAbsoluteURI(embeddedlistfieldnonfulltest_uri)))
-        self.assertEqual(embeddedlistfieldtest_object.embeddedlist[1].hidden, None)
-
         # Testing PUT
 
         response = self.c.put(person1_uri, '{"name": "Person 1z"}', content_type='application/json')

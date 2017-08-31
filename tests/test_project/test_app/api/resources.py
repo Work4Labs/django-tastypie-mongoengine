@@ -133,49 +133,6 @@ class EmbeddedCommentResource(resources.MongoEngineResource):
         object_class = documents.EmbeddedComment
 
 
-class EmbeddedPostResource(resources.MongoEngineResource):
-    comments = fields.EmbeddedListField(of='test_project.test_app.api.resources.EmbeddedCommentResource', attribute='comments', full=True, null=True)
-
-    class Meta:
-        object_class = documents.EmbeddedPost
-        ordering = ('title', 'comments')
-
-
-class BoardResource(resources.MongoEngineResource):
-    posts = fields.EmbeddedListField(of='test_project.test_app.api.resources.EmbeddedPostResource', attribute='posts', full=True, null=True)
-
-    class Meta:
-        queryset = documents.Board.objects.all()
-        allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
-        authorization = tastypie_authorization.Authorization()
-
-
-class EmbeddedCommentWithIDResource(resources.MongoEngineResource):
-    class Meta:
-        object_class = documents.EmbeddedCommentWithID
-        allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
-        authorization = tastypie_authorization.Authorization()
-        paginator_class = paginator.Paginator
-
-
-class DocumentWithIDResource(resources.MongoEngineResource):
-    comments = fields.EmbeddedListField(of='test_project.test_app.api.resources.EmbeddedCommentWithIDResource', attribute='comments', full=True, null=True)
-
-    class Meta:
-        queryset = documents.DocumentWithID.objects.all()
-        allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
-        authorization = tastypie_authorization.Authorization()
-
-
-class EmbeddedListInEmbeddedDocTestResource(resources.MongoEngineResource):
-    post = fields.EmbeddedDocumentField(embedded='test_project.test_app.api.resources.EmbeddedPostResource', attribute='post')
-
-    class Meta:
-        queryset = documents.EmbeddedListInEmbeddedDocTest.objects.all()
-        allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
-        authorization = tastypie_authorization.Authorization()
-
-
 class EmbeddedDocumentFieldTestResource(resources.MongoEngineResource):
     customer = fields.EmbeddedDocumentField(embedded='test_project.test_app.api.resources.EmbeddedPersonResource', attribute='customer', null=True)
 
@@ -197,25 +154,6 @@ class ListFieldTestResource(resources.MongoEngineResource):
 
     class Meta:
         queryset = documents.ListFieldTest.objects.all()
-        allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
-        authorization = tastypie_authorization.Authorization()
-
-
-class EmbeddedListFieldTestResource(resources.MongoEngineResource):
-    embeddedlist = fields.EmbeddedListField(of='test_project.test_app.api.resources.EmbeddedPersonResource', attribute='embeddedlist', full=True, null=True)
-
-    class Meta:
-        queryset = documents.EmbeddedListFieldTest.objects.all()
-        allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
-        authorization = tastypie_authorization.Authorization()
-        ordering = ('id', 'embeddedlist')
-
-
-class EmbeddedListFieldNonFullTestResource(resources.MongoEngineResource):
-    embeddedlist = fields.EmbeddedListField(of='test_project.test_app.api.resources.EmbeddedPersonResource', attribute='embeddedlist', full=False, null=True)
-
-    class Meta:
-        queryset = documents.EmbeddedListFieldTest.objects.all()
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         authorization = tastypie_authorization.Authorization()
 
@@ -247,15 +185,6 @@ class BooleanMapTestResource(resources.MongoEngineResource):
         authorization = tastypie_authorization.Authorization()
 
 
-class EmbeddedListWithFlagFieldTestResource(resources.MongoEngineResource):
-    embeddedlist = fields.EmbeddedListField(of='test_project.test_app.api.resources.EmbeddedPersonResource', attribute='embeddedlist', full=True, null=True)
-
-    class Meta:
-        queryset = documents.EmbeddedListWithFlagFieldTest.objects.all()
-        allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
-        authorization = tastypie_authorization.Authorization()
-
-
 class AutoAllocationFieldTestResource(resources.MongoEngineResource):
     slug = tastypie_fields.CharField(readonly=True, attribute='slug')
 
@@ -278,16 +207,6 @@ class EmbeddedExporterListResource(resources.MongoEngineResource):
 
     class Meta:
         object_class = documents.PipeExporterEmbedded
-
-
-class PipeResource(resources.MongoEngineResource):
-    exporters = fields.EmbeddedListField(of='test_project.test_app.api.resources.EmbeddedExporterListResource', attribute='exporters', full=True, null=True)
-
-    class Meta:
-        queryset = documents.Pipe.objects.all()
-        resource_name = 'pipes'
-        allowed_methods = ('get', 'post', 'put', 'delete')
-        authorization = tastypie_authorization.Authorization()
 
 
 class BlankableEmbeddedResource(resources.MongoEngineResource):

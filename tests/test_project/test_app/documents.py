@@ -103,10 +103,6 @@ class ListFieldTest(InheritableDocument):
     anytype = mongoengine.ListField()
 
 
-class EmbeddedListFieldTest(InheritableDocument):
-    embeddedlist = mongoengine.ListField(mongoengine.EmbeddedDocumentField(EmbeddedPerson))
-
-
 class ReferencedListFieldTest(InheritableDocument):
     referencedlist = mongoengine.ListField(mongoengine.ReferenceField(Person))
 
@@ -114,11 +110,6 @@ class ReferencedListFieldTest(InheritableDocument):
 class BooleanMapTest(InheritableDocument):
     is_published_auto = mongoengine.BooleanField(default=False, required=True)
     is_published_defined = mongoengine.BooleanField(default=False, required=True)
-
-
-class EmbeddedListWithFlagFieldTest(InheritableDocument):
-    embeddedlist = mongoengine.ListField(mongoengine.EmbeddedDocumentField(EmbeddedPerson))
-    is_published = mongoengine.BooleanField(default=False, required=True)
 
 
 class AutoAllocationFieldTest(InheritableDocument):

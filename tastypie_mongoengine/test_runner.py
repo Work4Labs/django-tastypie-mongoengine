@@ -1,21 +1,16 @@
+from unittest import TestSuite
 import urlparse
 
 from django.conf import settings
-from django.test import client, simple, testcases
-from django.utils import unittest
-
-try:
-    from django.test.runner import reorder_suite
-except ImportError:
-    from django.test.simple import reorder_suite
+from django.test import client, runner, TestCase
 
 from mongoengine import connect, connection
 from mongoengine.django import tests
 
 
-class MongoEngineTestSuiteRunner(simple.DjangoTestSuiteRunner):
+class MongoEngineTestSuiteRunner(runner.DiscoverRunner):
     """
-    It is the same as in DjangoTestSuiteRunner, but without relational databases.
+    It is the same as in DiscoverRunner, but without relational databases.
 
     It also supports filtering only wanted tests through ``TEST_RUNNER_FILTER``
     Django setting.
@@ -30,10 +25,10 @@ class MongoEngineTestSuiteRunner(simple.DjangoTestSuiteRunner):
             # We do NOT filter if filters are not set
             return suite
 
-        filtered = unittest.TestSuite()
+        filtered = TestSuite()
 
         for test in suite:
-            if isinstance(test, unittest.TestSuite):
+            if isinstance(test, TestSuite):
                 filtered.addTests(self._filter_suite(test))
             else:
                 for f in filters:
@@ -45,7 +40,7 @@ class MongoEngineTestSuiteRunner(simple.DjangoTestSuiteRunner):
     def build_suite(self, test_labels, extra_tests=None, **kwargs):
         suite = super(MongoEngineTestSuiteRunner, self).build_suite(test_labels, extra_tests=None, **kwargs)
         suite = self._filter_suite(suite)
-        return reorder_suite(suite, (testcases.TestCase,))
+        return runner.reorder_suite(suite, (TestCase,))
 
     def setup_databases(self, **kwargs):
         connection.disconnect()
