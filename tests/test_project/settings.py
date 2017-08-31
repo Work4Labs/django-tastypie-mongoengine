@@ -18,7 +18,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
@@ -27,6 +26,7 @@ ROOT_URLCONF = 'test_project.urls'
 TEST_RUNNER = 'tastypie_mongoengine.test_runner.MongoEngineTestSuiteRunner'
 
 INSTALLED_APPS = (
+    'django.contrib.contenttypes',
     'tastypie',
     'tastypie_mongoengine',
     'test_project.test_app',
