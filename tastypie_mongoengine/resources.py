@@ -563,9 +563,9 @@ class MongoEngineResource(resources.ModelResource):
             if excludes and name in excludes:
                 continue
 
-            # TODO: Might need it in the future
-            # if cls.should_skip_field(f):
-            #     continue
+            # remove _cls
+            if name == '_cls':
+                continue
 
             api_field_class = cls.api_field_from_mongo_field(f)
 
