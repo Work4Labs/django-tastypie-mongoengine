@@ -14,5 +14,6 @@ def runtests():
     execute_from_command_line(argv)
     sys.exit(0)
 
+
 if __name__ == "__main__":
     runtests()

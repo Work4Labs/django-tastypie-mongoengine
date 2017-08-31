@@ -43,8 +43,7 @@ MONGO_DATABASE_NAME = 'test_project'
 import mongoengine
 mongoengine.connect(MONGO_DATABASE_NAME)
 
-if mongoengine.VERSION >= (0, 8, 0):
-    AUTH_USER_MODEL = 'mongo_auth.MongoUser'
-    INSTALLED_APPS = (
-        'mongoengine.django.mongo_auth',
-    ) + INSTALLED_APPS
+AUTH_USER_MODEL = 'mongo_auth.MongoUser'
+INSTALLED_APPS = (
+    'mongoengine.django.mongo_auth',
+) + INSTALLED_APPS
