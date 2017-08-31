@@ -42,8 +42,3 @@ MONGO_DATABASE_NAME = 'test_project'
 
 import mongoengine
 mongoengine.connect(MONGO_DATABASE_NAME)
-
-AUTH_USER_MODEL = 'mongo_auth.MongoUser'
-INSTALLED_APPS = (
-    'mongoengine.django.mongo_auth',
-) + INSTALLED_APPS

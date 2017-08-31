@@ -1,11 +1,10 @@
-from unittest import TestSuite
+from unittest import TestCase, TestSuite
 import urlparse
 
 from django.conf import settings
 from django.test import client, runner, TestCase
 
 from mongoengine import connect, connection
-from mongoengine.django import tests
 
 
 class MongoEngineTestSuiteRunner(runner.DiscoverRunner):
@@ -50,20 +49,32 @@ class MongoEngineTestSuiteRunner(runner.DiscoverRunner):
         connection.get_connection().drop_database(self.db_name)
 
 
-class MongoEngineTestCase(tests.MongoTestCase):
+class MongoEngineTestCase(TestCase):
     """
-    A bugfixed version, see this `pull request`_.
+    From https://github.com/MongoEngine/mongoengine/blob/v0.9.0/mongoengine/django/tests.py
+    MongoEngine dropped its Django support since then. (Well, moved to a separate repo, which is dead)
 
-    .. _pull request: https://github.com/hmarr/mongoengine/pull/506
+    TestCase class that clear the collection between the tests
     """
+
+    @property
+    def db_name(self):
+        from django.conf import settings
+        return 'test_%s' % getattr(settings, 'MONGO_DATABASE_NAME', 'dummy')
 
     def __init__(self, methodName='runtest'):
-        # We skip MongoTestCase init
-        super(tests.MongoTestCase, self).__init__(methodName)
-
-    def _post_teardown(self):
+        connect(self.db_name)
         self.db = connection.get_db()
-        super(MongoEngineTestCase, self)._post_teardown()
+        super(MongoEngineTestCase, self).__init__(methodName)
+
+    def dropCollections(self):
+        for collection in self.db.collection_names():
+            if collection.startswith('system.'):
+                continue
+            self.db.drop_collection(collection)
+
+    def tearDown(self):
+        self.dropCollections()
 
 
 # We also patch Django so that it supports PATCH requests (used by Tastypie)
