@@ -24,12 +24,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'test_project.urls'
 
-AUTHENTICATION_BACKENDS = (
-    'mongoengine.django.auth.MongoEngineBackend',
-)
-
-SESSION_ENGINE = 'mongoengine.django.sessions'
-
 TEST_RUNNER = 'tastypie_mongoengine.test_runner.MongoEngineTestSuiteRunner'
 
 INSTALLED_APPS = (
