@@ -98,7 +98,7 @@ class MongoEngineModelDeclarativeMetaclass(resources.ModelDeclarativeMetaclass):
             if field_name in new_class.declared_fields:
                 continue
             # Meta.fields is None by default
-            if include_fields and len(include_fields) and field_name not in include_fields:
+            if include_fields and field_name not in include_fields:
                 del(new_class.base_fields[field_name])
             if len(excludes) and field_name in excludes:
                 del(new_class.base_fields[field_name])
