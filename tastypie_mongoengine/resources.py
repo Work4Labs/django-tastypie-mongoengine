@@ -97,7 +97,8 @@ class MongoEngineModelDeclarativeMetaclass(resources.ModelDeclarativeMetaclass):
                     del(new_class.base_fields[field_name])
             if field_name in new_class.declared_fields:
                 continue
-            if len(include_fields) and field_name not in include_fields:
+            # Meta.fields is None by default
+            if include_fields and field_name not in include_fields:
                 del(new_class.base_fields[field_name])
             if len(excludes) and field_name in excludes:
                 del(new_class.base_fields[field_name])
@@ -562,9 +563,9 @@ class MongoEngineResource(resources.ModelResource):
             if excludes and name in excludes:
                 continue
 
-            # TODO: Might need it in the future
-            # if cls.should_skip_field(f):
-            #     continue
+            # remove _cls
+            if name == '_cls':
+                continue
 
             api_field_class = cls.api_field_from_mongo_field(f)
 

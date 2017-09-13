@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
 from tastypie import api
 
@@ -13,8 +13,6 @@ v1_api.register(resources.CompanyResource())
 v1_api.register(resources.ContactResource())
 v1_api.register(resources.ContactGroupResource())
 v1_api.register(resources.CustomerResource())
-v1_api.register(resources.BoardResource())
-v1_api.register(resources.EmbeddedListInEmbeddedDocTestResource())
 v1_api.register(resources.DictFieldTestResource())
 v1_api.register(resources.ListFieldTestResource())
 v1_api.register(resources.ReferencedListFieldTestResource())
@@ -26,8 +24,6 @@ v1_api.register(resources.BlankableParentResource())
 v1_api.register(resources.ReadonlyParentResource())
 v1_api.register(resources.DatetimeFieldTestResource())
 
-urlpatterns = patterns(
-    '',
-
+urlpatterns = [
     url(r'^api/', include(v1_api.urls)),
-)
+]

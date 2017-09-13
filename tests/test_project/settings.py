@@ -18,21 +18,15 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 ROOT_URLCONF = 'test_project.urls'
 
-AUTHENTICATION_BACKENDS = (
-    'mongoengine.django.auth.MongoEngineBackend',
-)
-
-SESSION_ENGINE = 'mongoengine.django.sessions'
-
 TEST_RUNNER = 'tastypie_mongoengine.test_runner.MongoEngineTestSuiteRunner'
 
 INSTALLED_APPS = (
+    'django.contrib.contenttypes',
     'tastypie',
     'tastypie_mongoengine',
     'test_project.test_app',
@@ -42,8 +36,3 @@ MONGO_DATABASE_NAME = 'test_project'
 
 import mongoengine
 mongoengine.connect(MONGO_DATABASE_NAME)
-
-AUTH_USER_MODEL = 'mongo_auth.MongoUser'
-INSTALLED_APPS = (
-    'mongoengine.django.mongo_auth',
-) + INSTALLED_APPS
