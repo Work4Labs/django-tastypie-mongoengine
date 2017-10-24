@@ -1,12 +1,17 @@
+import itertools
 import re
 import sys
 
+from django.conf import urls
 from django.core import exceptions
 from django.core.urlresolvers import Resolver404
+from django.db.models import constants
 from django.db.models import base as models_base
+from django.utils import datastructures
 import mongoengine
 from mongoengine import queryset
 from mongoengine.queryset.transform import MATCH_OPERATORS
+from tastypie import bundle as tastypie_bundle, exceptions as tastypie_exceptions, fields as tastypie_fields, http, resources, utils
 from tastypie import exceptions as tastypie_exceptions, fields as tastypie_fields, resources
 from tastypie.exceptions import NotFound
 
