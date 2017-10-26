@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import itertools
 import re
 import sys
@@ -7,7 +8,6 @@ from django.core import exceptions
 from django.core.urlresolvers import Resolver404
 from django.db.models import constants
 from django.db.models import base as models_base
-from django.utils import datastructures
 import mongoengine
 from mongoengine import queryset
 from mongoengine.queryset.transform import MATCH_OPERATORS
@@ -38,7 +38,7 @@ class NOT_HYDRATED(object):
     pass
 
 
-class ListQuerySet(datastructures.SortedDict):
+class ListQuerySet(OrderedDict):
     # Workaround for https://github.com/toastdriven/django-tastypie/pull/670
     query = Query()
 
@@ -117,7 +117,7 @@ class ListQuerySet(datastructures.SortedDict):
         return self.itervalues()
 
     def __reversed__(self):
-        for key in reversed(self.keyOrder):
+        for key in reversed(self):
             yield self[key]
 
     def __getitem__(self, key):
