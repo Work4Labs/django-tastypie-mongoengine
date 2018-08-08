@@ -8,6 +8,15 @@ jobs:
       - image: circleci/mongo:3.6.6-ram
     steps:
       - checkout
+
+      - restore_cache:  # use cached venv unless setup.py (requirements) has changed
+          keys:
+            - v1-deps-{{ checksum "setup.py" }}
       - run: virtualenv venv
       - run: venv/bin/python setup.py install
+      - save_cache:
+          key: v1-deps-{{ checksum "setup.py" }}
+          paths:
+            - ~/project/venv
+
       - run: venv/bin/python setup.py test
