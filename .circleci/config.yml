@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:
+    docker:
+      # Main Python image: convenience image with git and other useful tools
+      - image: circleci/python:2.7-jessie-node
+      # Additional DBs
+      - image: circleci/mongo:3.6.6-ram
+    steps:
+      - checkout
+
+      - restore_cache:  # use cached venv unless setup.py (requirements) has changed
+          keys:
+            - v1-deps-{{ checksum "setup.py" }}
+      - run: virtualenv venv
+      - run: venv/bin/python setup.py install
+      - save_cache:
+          key: v1-deps-{{ checksum "setup.py" }}
+          paths:
+            - ~/project/venv
+
+      - run: venv/bin/python setup.py test
