@@ -4,6 +4,8 @@ jobs:
     docker:
       # Main Python image: convenience image with git and other useful tools
       - image: circleci/python:2.7-jessie-node
+      # Additional DBs
+      - image: circleci/mongo:3.6.6-ram
     steps:
       - checkout
       - run: virtualenv venv
