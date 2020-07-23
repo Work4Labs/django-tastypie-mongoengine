@@ -37,8 +37,9 @@ if __name__ == '__main__':
         install_requires=(
             'Django>=1.10.5,<2',
             'django-tastypie>=0.13.3',
-            'mongoengine>=0.13.0',
+            'mongoengine>=0.16.3,<0.17.0',  # 16 is the min version for python 3
             'python-dateutil>=2.1',
+            'packaging>=20.4',
             'lxml',
             'defusedxml',
             'PyYAML',

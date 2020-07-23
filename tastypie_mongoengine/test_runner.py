@@ -1,5 +1,5 @@
 from unittest import TestCase, TestSuite
-import urlparse
+import urllib.parse
 
 from django.conf import settings
 from django.test import client, runner, TestCase
@@ -63,7 +63,8 @@ class MongoEngineTestCase(TestCase):
         return 'test_%s' % getattr(settings, 'MONGO_DATABASE_NAME', 'dummy')
 
     def __init__(self, methodName='runtest'):
-        connect(self.db_name)
+        connection.disconnect()
+        connect(self.db_name, **getattr(settings, 'MONGO_DATABASE_OPTIONS', {}))
         self.db = connection.get_db()
         super(MongoEngineTestCase, self).__init__(methodName)
 
@@ -72,6 +73,9 @@ class MongoEngineTestCase(TestCase):
             if collection.startswith('system.'):
                 continue
             self.db.drop_collection(collection)
+
+    def setUp(self):
+        self.dropCollections()
 
     def tearDown(self):
         self.dropCollections()
@@ -88,7 +92,7 @@ def requestfactory_patch(self, path, data=None, content_type=client.MULTIPART_CO
     data = data or {}
     patch_data = self._encode_data(data, content_type)
 
-    parsed = urlparse.urlparse(path)
+    parsed = urllib.parse.urlparse(path)
     request = {
         'CONTENT_LENGTH': len(patch_data),
         'CONTENT_TYPE': content_type,
